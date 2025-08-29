@@ -1,0 +1,37 @@
+Priority Order (Descending) - Based on My Assumptions
+---------------------------
+1. Event (3)
+2. Bundle (2)
+3. Pay-Per-Use (1)
+
+Resolver Behavior
+-----------------
+- Load client’s active subscriptions, sort by priority desc.
+- Check in strict order:
+  • Event: if apiId ∈ Event.apiIds → cost = fixed event price
+  • Bundle: if apiId ∈ Bundle.apiIds → cost = API.pricePerCall
+  • Pay-Per-Use: fallback if assigned → cost = API.pricePerCall
+- If none matches → reject (403)
+
+Usage Logging
+-------------
+- Event call: Usage { clientId, apiId, cost }
+- Bundle / Pay-Per-Use: Usage { clientId, apiId, cost }
+
+Invoicing (Monthly)
+-------------------
+- Window: [startOfMonth, startOfNextMonth]
+- Aggregate by type:
+  • Event → sum of fixed costs
+  • Bundle + Pay-Per-Use → per-call sum
+- Bundle Discount:
+  • If calls ≥ threshold → apply discountPercentage
+  • Applied retroactively at invoice generation
+- Invoice = { clientId, month, breakdown, totalAmount }
+
+Pricing Rules (Concise)
+-----------------------
+- Event: fixed price per call (apiId ∈ Event.apiIds)
+- Bundle: per-call billing; discounts only at invoice time
+- Pay-Per-Use: per-call billing (fallback if no match)
+- Rejection: no plan matches → 403
