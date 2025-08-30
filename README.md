@@ -373,22 +373,6 @@ curl -X GET "http://localhost:3000/api/v1/my_api/billing/?clientId=CLIENT_ID&mon
     - Verify required fields are present
     - Review Joi validation schemas
 
-### Debug Mode
-
-```bash
-# Enable debug logging
-DEBUG=* npm start
-```
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature-name`
-3. Make your changes and add tests
-4. Commit your changes: `git commit -am 'Add feature'`
-5. Push to the branch: `git push origin feature-name`
-6. Submit a pull request
-
 ### Development Guidelines
 
 -   Follow ESLint configuration
